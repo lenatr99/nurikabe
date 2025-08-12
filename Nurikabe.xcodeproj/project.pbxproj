@@ -1,0 +1,557 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		02D54ACE2E4B3D2C00A2CDDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02D54AAC2E4B3D2B00A2CDDD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02D54AB32E4B3D2B00A2CDDD;
+			remoteInfo = Nurikabe;
+		};
+		02D54AD82E4B3D2C00A2CDDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02D54AAC2E4B3D2B00A2CDDD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02D54AB32E4B3D2B00A2CDDD;
+			remoteInfo = Nurikabe;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02D54AB42E4B3D2B00A2CDDD /* Nurikabe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nurikabe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		02D54ACD2E4B3D2C00A2CDDD /* NurikabeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NurikabeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		02D54AD72E4B3D2C00A2CDDD /* NurikabeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NurikabeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		02D54AB62E4B3D2B00A2CDDD /* Nurikabe */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Nurikabe;
+			sourceTree = "<group>";
+		};
+		02D54AD02E4B3D2C00A2CDDD /* NurikabeTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NurikabeTests;
+			sourceTree = "<group>";
+		};
+		02D54ADA2E4B3D2C00A2CDDD /* NurikabeUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NurikabeUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		02D54AB12E4B3D2B00A2CDDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02D54ACA2E4B3D2C00A2CDDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02D54AD42E4B3D2C00A2CDDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02D54AAB2E4B3D2B00A2CDDD = {
+			isa = PBXGroup;
+			children = (
+				02D54AB62E4B3D2B00A2CDDD /* Nurikabe */,
+				02D54AD02E4B3D2C00A2CDDD /* NurikabeTests */,
+				02D54ADA2E4B3D2C00A2CDDD /* NurikabeUITests */,
+				02D54AB52E4B3D2B00A2CDDD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		02D54AB52E4B3D2B00A2CDDD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02D54AB42E4B3D2B00A2CDDD /* Nurikabe.app */,
+				02D54ACD2E4B3D2C00A2CDDD /* NurikabeTests.xctest */,
+				02D54AD72E4B3D2C00A2CDDD /* NurikabeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		02D54AB32E4B3D2B00A2CDDD /* Nurikabe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02D54AE12E4B3D2C00A2CDDD /* Build configuration list for PBXNativeTarget "Nurikabe" */;
+			buildPhases = (
+				02D54AB02E4B3D2B00A2CDDD /* Sources */,
+				02D54AB12E4B3D2B00A2CDDD /* Frameworks */,
+				02D54AB22E4B3D2B00A2CDDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				02D54AB62E4B3D2B00A2CDDD /* Nurikabe */,
+			);
+			name = Nurikabe;
+			packageProductDependencies = (
+			);
+			productName = Nurikabe;
+			productReference = 02D54AB42E4B3D2B00A2CDDD /* Nurikabe.app */;
+			productType = "com.apple.product-type.application";
+		};
+		02D54ACC2E4B3D2C00A2CDDD /* NurikabeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02D54AE42E4B3D2C00A2CDDD /* Build configuration list for PBXNativeTarget "NurikabeTests" */;
+			buildPhases = (
+				02D54AC92E4B3D2C00A2CDDD /* Sources */,
+				02D54ACA2E4B3D2C00A2CDDD /* Frameworks */,
+				02D54ACB2E4B3D2C00A2CDDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				02D54ACF2E4B3D2C00A2CDDD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				02D54AD02E4B3D2C00A2CDDD /* NurikabeTests */,
+			);
+			name = NurikabeTests;
+			packageProductDependencies = (
+			);
+			productName = NurikabeTests;
+			productReference = 02D54ACD2E4B3D2C00A2CDDD /* NurikabeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		02D54AD62E4B3D2C00A2CDDD /* NurikabeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02D54AE72E4B3D2C00A2CDDD /* Build configuration list for PBXNativeTarget "NurikabeUITests" */;
+			buildPhases = (
+				02D54AD32E4B3D2C00A2CDDD /* Sources */,
+				02D54AD42E4B3D2C00A2CDDD /* Frameworks */,
+				02D54AD52E4B3D2C00A2CDDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				02D54AD92E4B3D2C00A2CDDD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				02D54ADA2E4B3D2C00A2CDDD /* NurikabeUITests */,
+			);
+			name = NurikabeUITests;
+			packageProductDependencies = (
+			);
+			productName = NurikabeUITests;
+			productReference = 02D54AD72E4B3D2C00A2CDDD /* NurikabeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		02D54AAC2E4B3D2B00A2CDDD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					02D54AB32E4B3D2B00A2CDDD = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					02D54ACC2E4B3D2C00A2CDDD = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 02D54AB32E4B3D2B00A2CDDD;
+					};
+					02D54AD62E4B3D2C00A2CDDD = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 02D54AB32E4B3D2B00A2CDDD;
+					};
+				};
+			};
+			buildConfigurationList = 02D54AAF2E4B3D2B00A2CDDD /* Build configuration list for PBXProject "Nurikabe" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 02D54AAB2E4B3D2B00A2CDDD;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 02D54AB52E4B3D2B00A2CDDD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				02D54AB32E4B3D2B00A2CDDD /* Nurikabe */,
+				02D54ACC2E4B3D2C00A2CDDD /* NurikabeTests */,
+				02D54AD62E4B3D2C00A2CDDD /* NurikabeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		02D54AB22E4B3D2B00A2CDDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02D54ACB2E4B3D2C00A2CDDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02D54AD52E4B3D2C00A2CDDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02D54AB02E4B3D2B00A2CDDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02D54AC92E4B3D2C00A2CDDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02D54AD32E4B3D2C00A2CDDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		02D54ACF2E4B3D2C00A2CDDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02D54AB32E4B3D2B00A2CDDD /* Nurikabe */;
+			targetProxy = 02D54ACE2E4B3D2C00A2CDDD /* PBXContainerItemProxy */;
+		};
+		02D54AD92E4B3D2C00A2CDDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02D54AB32E4B3D2B00A2CDDD /* Nurikabe */;
+			targetProxy = 02D54AD82E4B3D2C00A2CDDD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02D54ADF2E4B3D2C00A2CDDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		02D54AE02E4B3D2C00A2CDDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		02D54AE22E4B3D2C00A2CDDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UBFXPWGV4S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.Nurikabe;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		02D54AE32E4B3D2C00A2CDDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UBFXPWGV4S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.Nurikabe;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		02D54AE52E4B3D2C00A2CDDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nurikabe.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Nurikabe";
+			};
+			name = Debug;
+		};
+		02D54AE62E4B3D2C00A2CDDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nurikabe.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Nurikabe";
+			};
+			name = Release;
+		};
+		02D54AE82E4B3D2C00A2CDDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Nurikabe;
+			};
+			name = Debug;
+		};
+		02D54AE92E4B3D2C00A2CDDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Nurikabe;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		02D54AAF2E4B3D2B00A2CDDD /* Build configuration list for PBXProject "Nurikabe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02D54ADF2E4B3D2C00A2CDDD /* Debug */,
+				02D54AE02E4B3D2C00A2CDDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02D54AE12E4B3D2C00A2CDDD /* Build configuration list for PBXNativeTarget "Nurikabe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02D54AE22E4B3D2C00A2CDDD /* Debug */,
+				02D54AE32E4B3D2C00A2CDDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02D54AE42E4B3D2C00A2CDDD /* Build configuration list for PBXNativeTarget "NurikabeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02D54AE52E4B3D2C00A2CDDD /* Debug */,
+				02D54AE62E4B3D2C00A2CDDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02D54AE72E4B3D2C00A2CDDD /* Build configuration list for PBXNativeTarget "NurikabeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02D54AE82E4B3D2C00A2CDDD /* Debug */,
+				02D54AE92E4B3D2C00A2CDDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 02D54AAC2E4B3D2B00A2CDDD /* Project object */;
+}
