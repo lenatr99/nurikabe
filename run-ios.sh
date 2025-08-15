@@ -55,15 +55,24 @@ if [[ -z "$UDID" ]]; then
   exit 1
 fi
 
+# Ensure the Simulator app itself is running
+if ! pgrep -x "Simulator" >/dev/null 2>&1; then
+  log "🖥️ Opening Simulator app..."
+  open -a "Simulator"
+  sleep 1
+fi
+
 # Boot simulator if needed
-if ! xcrun simctl list devices | grep -q "$UDID.*(Booted)"; then
+if ! xcrun simctl list devices booted | grep -q "$UDID"; then
   log "🌀 Booting simulator $SIMULATOR_NAME..."
-  open -a "Simulator" || true
   xcrun simctl boot "$UDID" || true
 fi
 
 log "⏳ Waiting for simulator to be ready..."
 xcrun simctl bootstatus "$UDID" -b
+
+# Ensure the correct device window is shown in the Simulator app
+open -a "Simulator" --args -CurrentDeviceUDID "$UDID" || true
 
 # Locate the .app
 APP_PATH="$PWD/$DERIVED_DATA_PATH/Build/Products/$CONFIGURATION-iphonesimulator/$SCHEME.app"
@@ -86,3 +95,22 @@ fi
 
 log "✅ Done!"
 echo "Full build log saved to: $BUILD_LOG"
+echo
+
+# Open console monitoring in a new terminal window
+log "📱 Opening console monitor in new terminal window..."
+
+# Kill any existing log streams for this process to avoid duplicates
+pkill -f "log stream.*$SCHEME" >/dev/null 2>&1 || true
+sleep 0.5
+
+# Open new terminal window with console monitoring
+osascript <<EOF
+tell application "Terminal"
+    do script "echo '📱 Console Monitor for $SCHEME'; echo 'App logs will appear below:'; echo; xcrun simctl spawn '$UDID' log stream --predicate 'process == \"$SCHEME\"' --style compact"
+    activate
+end tell
+EOF
+
+log "🎉 Console monitor opened in new terminal window!"
+echo "   You can now interact with the app and see debug output in real-time."

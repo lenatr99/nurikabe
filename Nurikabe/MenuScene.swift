@@ -87,7 +87,7 @@ final class MenuScene: SKScene {
             sparkleEmitter.particleScale = 1.2
             sparkleEmitter.particleScaleRange = 0.6
             sparkleEmitter.particleScaleSpeed = -0.08
-            sparkleEmitter.particleColor = UIColor.white
+            sparkleEmitter.particleColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             sparkleEmitter.particlePositionRange = CGVector(dx: size.width, dy: size.height * 0.2)
             sparkleEmitter.emissionAngle = CGFloat.pi / 2.0
             sparkleEmitter.emissionAngleRange = .pi / 6
@@ -130,7 +130,7 @@ final class MenuScene: SKScene {
         for i in 0..<3 {
             let diamond = createDiamond(size: CGSize(width: 8, height: 8))
             diamond.fillColor = UIColor(red: 1.0, green: 0.9, blue: 0.96, alpha: 0.4)
-            diamond.strokeColor = .clear
+            diamond.strokeColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
             let x = CGFloat.random(in: -size.width * 0.4...size.width * 0.4)
             let y = CGFloat.random(in: -size.height * 0.1...size.height * 0.4)
             diamond.position = CGPoint(x: x, y: y)
@@ -170,8 +170,8 @@ final class MenuScene: SKScene {
         
         // White square with border
         let square = SKShapeNode(rectOf: CGSize(width: size, height: size), cornerRadius: 2)
-        square.fillColor = UIColor.white
-        square.strokeColor = UIColor.white
+        square.fillColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        square.strokeColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         square.lineWidth = 1.0
         container.addChild(square)
         
@@ -211,11 +211,11 @@ final class MenuScene: SKScene {
         subtitleLabel.zPosition = 9
         addChild(subtitleLabel)
 
-        // Add subtle letter spacing effect
-        let letterSpacing: CGFloat = 2.0
-        if let attributedText = NSMutableAttributedString(string: subtitleLabel.text ?? "") as NSMutableAttributedString? {
-            attributedText.addAttribute(.kern, value: letterSpacing, range: NSRange(location: 0, length: attributedText.length))
-        }
+        // Add subtle letter spacing effect (commented out for now)
+        // let letterSpacing: CGFloat = 2.0
+        // if let attributedText = NSMutableAttributedString(string: subtitleLabel.text ?? "") {
+        //     attributedText.addAttribute(.kern, value: letterSpacing, range: NSRange(location: 0, length: attributedText.length))
+        // }
     }
 
     // MARK: - Buttons
@@ -400,6 +400,8 @@ final class MenuScene: SKScene {
         return UIFont.systemFont(ofSize: 18).fontName
     }
 
+    // Commented out due to cgColor compatibility issues
+    /*
     private func makeVerticalGradientTexture(size: CGSize, colors: [UIColor]) -> SKTexture {
         let renderer = UIGraphicsImageRenderer(size: size)
         let image = renderer.image { ctx in
@@ -416,6 +418,7 @@ final class MenuScene: SKScene {
         }
         return SKTexture(image: image)
     }
+    */
 }
 
 // MARK: - Small SKAction convenience

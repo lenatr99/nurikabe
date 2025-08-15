@@ -11,14 +11,9 @@ struct AppColors {
     // MARK: - Primary Colors
     static let primary = UIColor(red: 0.945, green: 0.537, blue: 0.722, alpha: 1.0)
     
-    // MARK: - Derived Colors (automatically calculated from primary)
+    // MARK: - Derived Colors
     static let primaryLight = primary.withAlphaComponent(0.3)
-    static let primaryDark = UIColor(
-        red: primary.cgColor.components![0] * 0.8,
-        green: primary.cgColor.components![1] * 0.8,
-        blue: primary.cgColor.components![2] * 0.8,
-        alpha: 1.0
-    )
+    static let primaryDark = UIColor(red: 0.756, green: 0.429, blue: 0.578, alpha: 1.0)
     
     // MARK: - UI Colors
     static let background = primary
