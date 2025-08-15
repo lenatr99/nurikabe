@@ -502,7 +502,7 @@ class GameScene: SKScene {
     
     private func showSolvedMessage() {
         // Create solved message overlay
-        let overlay = SKShapeNode(rectOf: CGSize(width: size.width * 0.8, height: size.height * 0.45), cornerRadius: 20)
+        let overlay = SKShapeNode(rectOf: CGSize(width: size.width * 0.8, height: size.height * 0.45))
         overlay.fillColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
         overlay.strokeColor = AppColors.primary
         overlay.lineWidth = 3.0
@@ -554,12 +554,8 @@ class GameScene: SKScene {
         
         // Animate in
         let fadeIn = SKAction.fadeIn(withDuration: 0.5)
-        let scale = SKAction.sequence([
-            SKAction.scale(to: 0.8, duration: 0),
-            SKAction.scale(to: 1.0, duration: 0.5)
-        ])
         
-        overlay.run(SKAction.group([fadeIn, scale]))
+        overlay.run(SKAction.group([fadeIn]))
     }
     
     private func createNextPuzzleButton() -> SKNode {
@@ -865,7 +861,7 @@ class GameScene: SKScene {
         let messageLabel = SKLabelNode(fontNamed: "HelveticaNeue-Medium")
         messageLabel.text = "Not quite right... Keep trying!"
         messageLabel.fontSize = 24
-        messageLabel.fontColor = UIColor(red: 1.0, green: 0.3, blue: 0.3, alpha: 1.0)
+        messageLabel.fontColor = UIColor(red: 1.0, green: 1, blue: 1, alpha: 1.0)
         messageLabel.position = CGPoint(x: 0, y: size.height * 0.3)
         messageLabel.zPosition = 150
         messageLabel.alpha = 0
