@@ -42,6 +42,7 @@ function solvePuzzle(puzzleString, diff = 'easy') {
     if (!nkWorker) return reject(new Error('Worker not available (check 404 on solverGenerator.js)'));
     const onMessage = (e) => {
       const msg = e.data;
+      console.log(msg);
       if (typeof msg === 'string' && msg.startsWith('done_')) {
         nkWorker.removeEventListener('message', onMessage);
         resolve(msg.slice(5)); // "true|false:steps:flat"
@@ -154,8 +155,8 @@ async function generateSolveAndShow(count = 10, opts = { w: 5, h: 5, diff: 'easy
 // ---- UI ----
 document.getElementById('gen').addEventListener('click', async () => {
   try {
-    log('Generating 10 puzzles (5×5, easy) and showing solutions…');
-    await generateSolveAndShow(10, { w: 5, h: 5, diff: 'easy', sym: 'none' });
+    log('Generating 50 puzzles (5×5, easy) and showing solutions…');
+    await generateSolveAndShow(50, { w: 15, h: 15, diff: 'easy', sym: 'none' });
     log('Done.');
   } catch (e) {
     log('Batch failed:', e);

@@ -191,7 +191,7 @@ final class MenuScene: SKScene {
     // MARK: - Title
     private func setupTitleStack() {
         // Elegant title with enhanced typography
-        titleLabel = SKLabelNode(fontNamed: preferredTitleFont())
+        titleLabel = SKLabelNode(fontNamed: UIConstants.preferredTitleFont())
         titleLabel.text = "Nurikabe"
         titleLabel.fontSize = max(48, min(64, size.width * 0.085))
         titleLabel.fontColor = AppColors.titleText
@@ -202,7 +202,7 @@ final class MenuScene: SKScene {
         addChild(titleLabel)
 
         // Refined subtitle with better styling
-        subtitleLabel = SKLabelNode(fontNamed: preferredSubtitleFont())
+        subtitleLabel = SKLabelNode(fontNamed: UIConstants.preferredSubtitleFont())
         subtitleLabel.text = "Logic Islands"
         subtitleLabel.fontSize = max(18, min(26, size.width * 0.035))
         subtitleLabel.fontColor = AppColors.subtitleText
@@ -307,7 +307,7 @@ final class MenuScene: SKScene {
 
     private func showSettings() {
         // TODO: replace with real settings scene when ready
-        let pop = SKLabelNode(fontNamed: preferredRegularFont())
+        let pop = SKLabelNode(fontNamed: UIConstants.preferredRegularFont())
         pop.text = "Settings coming soon"
         pop.fontSize = 18
         pop.alpha = 0
@@ -336,7 +336,7 @@ final class MenuScene: SKScene {
         container.addChild(bg)
 
         // Button icon
-        let iconLabel = SKLabelNode(fontNamed: preferredBoldFont())
+        let iconLabel = SKLabelNode(fontNamed: UIConstants.preferredBoldFont())
         iconLabel.text = icon
         iconLabel.fontSize = 22
         iconLabel.fontColor = AppColors.buttonText
@@ -347,7 +347,7 @@ final class MenuScene: SKScene {
         container.addChild(iconLabel)
 
         // Enhanced title text
-        let label = SKLabelNode(fontNamed: preferredButtonFont())
+        let label = SKLabelNode(fontNamed: UIConstants.preferredButtonFont())
         label.text = title
         label.fontSize = 22
         label.fontColor = AppColors.buttonText
@@ -365,40 +365,7 @@ final class MenuScene: SKScene {
         return node.parent.flatMap { nodeButtonAncestor($0) }
     }
 
-    // MARK: - Utilities
-    private func preferredTitleFont() -> String {
-        // Elegant serif fonts for the main title
-        let candidates = ["Georgia-Bold", "TimesNewRomanPS-BoldMT", "AvenirNext-Heavy", "HelveticaNeue-Bold"]
-        for name in candidates where UIFont(name: name, size: 20) != nil { return name }
-        return UIFont.boldSystemFont(ofSize: 20).fontName
-    }
 
-    private func preferredSubtitleFont() -> String {
-        // Clean, modern fonts for subtitle
-        let candidates = ["AvenirNext-Medium", "HelveticaNeue-Light", "HelveticaNeue-Thin"]
-        for name in candidates where UIFont(name: name, size: 18) != nil { return name }
-        return UIFont.systemFont(ofSize: 18, weight: .light).fontName
-    }
-
-    private func preferredButtonFont() -> String {
-        // Semi-bold fonts for buttons
-        let candidates = ["AvenirNext-DemiBold", "HelveticaNeue-Medium", "AvenirNext-Medium"]
-        for name in candidates where UIFont(name: name, size: 20) != nil { return name }
-        return UIFont.systemFont(ofSize: 20, weight: .medium).fontName
-    }
-
-    private func preferredBoldFont() -> String {
-        // AvenirNext is widely available; falls back to system
-        let candidates = ["AvenirNext-Heavy", "AvenirNext-Bold", "HelveticaNeue-Bold"]
-        for name in candidates where UIFont(name: name, size: 20) != nil { return name }
-        return UIFont.boldSystemFont(ofSize: 20).fontName
-    }
-
-    private func preferredRegularFont() -> String {
-        let candidates = ["AvenirNext-Medium", "HelveticaNeue-Medium", "HelveticaNeue"]
-        for name in candidates where UIFont(name: name, size: 18) != nil { return name }
-        return UIFont.systemFont(ofSize: 18).fontName
-    }
 
     // Commented out due to cgColor compatibility issues
     /*

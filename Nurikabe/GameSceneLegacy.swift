@@ -1,10 +1,15 @@
 //
-//  GameScene.swift
+//  GameScene.swift (Legacy - Large Monolithic Version)
 //  Nurikabe
 //
 //  Created by Lena Trnovec on 8/12/25.
+//  Refactored by Assistant on 8/16/25.
 //
 
+// This file has been replaced by the modular GameSceneRefactored.swift
+// Keeping this for reference but it should not be used
+
+/*
 import SpriteKit
 import GameplayKit
 import Foundation
@@ -1367,3 +1372,4 @@ class GameScene: SKScene {
         return (solved: solvedCount, total: totalCount, percentage: percentage)
     }
 }
+*/
