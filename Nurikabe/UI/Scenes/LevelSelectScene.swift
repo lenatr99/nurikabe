@@ -7,34 +7,20 @@
 
 import SpriteKit
 
-/// Level selection scene with simplified structure
+/// Level selection scene with paginated grid view
 class LevelSelectScene: BaseScene {
     
     private var backButton: SKNode!
-    private var scrollContainer: SKNode!
-    private var cropNode: SKCropNode!
+    private var paginatedGridView: PaginatedGridView!
     private var allPuzzles: [Puzzle] = []
     private var currentGridConfig: GameConfig.GridSizeConfig = GameConfig.gridSizes[0]
     private var progressManager: ProgressManager!
-    
-    // Layout properties
-    private let tilesPerRow = 4
-    private let tileSize: CGFloat = 80
-    private let tileSpacing: CGFloat = 12
-    
-    // Scroll properties
-    private var scrollOffset: CGFloat = 0
-    private var maxScrollOffset: CGFloat = 0
-    private var minScrollOffset: CGFloat = 0
-    private var lastTouchY: CGFloat = 0
-    private var isDragging = false
-    private var scrollVelocity: CGFloat = 0
     
     override func setupScene() {
         progressManager = ProgressManager(config: currentGridConfig)
         loadPuzzleData()
         setupBackButton()
-        setupLevelGrid()
+        setupPaginatedGrid()
     }
     
     func setGridSize(filename: String) {
@@ -55,56 +41,65 @@ class LevelSelectScene: BaseScene {
         addChild(backButton)
     }
     
-    private func setupLevelGrid() {
-        let availableHeight = size.height * 0.6
+    private func setupPaginatedGrid() {
+        // Configure the paginated grid view
+        let config = PaginatedGridView.Configuration(
+            itemsPerPage: 20, // 4x5 grid
+            itemSize: CGSize(width: 80, height: 80),
+            itemSpacing: 8,
+            pageSpacing: 0, // No extra spacing between pages
+            showArrows: true,
+            animationDuration: 0.3
+        )
         
-        // Create crop node for clipping
-        cropNode = SKCropNode()
-        cropNode.zPosition = 50
-        addChild(cropNode)
+        paginatedGridView = PaginatedGridView(configuration: config)
+        paginatedGridView.setViewSize(size)
+        paginatedGridView.position = CGPoint(x: 0, y: 0)
+        paginatedGridView.zPosition = 10  // Lower than back button (100) but sufficient for level tiles
+        addChild(paginatedGridView)
         
-        let maskNode = SKShapeNode(rectOf: CGSize(width: size.width, height: availableHeight))
-        maskNode.fillColor = .white
-        maskNode.strokeColor = .clear
-        maskNode.position = CGPoint(x: 0, y: 0)
-        cropNode.maskNode = maskNode
+        // Set up callbacks
+        paginatedGridView.onItemTapped = { [weak self] levelIndex in
+            self?.handleLevelTileTap(levelIndex: levelIndex)
+        }
         
-        scrollContainer = SKNode()
-        cropNode.addChild(scrollContainer)
+        paginatedGridView.onPageChanged = { pageIndex in
+            NSLog("📄 Switched to page \(pageIndex + 1)")
+        }
         
-        setupLevelTiles(availableHeight: availableHeight)
-        updateScrollPosition()
+        // Load puzzle data into the grid
+        loadPuzzlesIntoGrid()
     }
     
-    private func setupLevelTiles(availableHeight: CGFloat) {
+    private func loadPuzzlesIntoGrid() {
         let solvedPuzzles = progressManager.getSolvedPuzzles()
         let highestUnlocked = progressManager.getHighestUnlockedLevel(totalPuzzles: allPuzzles.count)
         
-        let rows = (allPuzzles.count + tilesPerRow - 1) / tilesPerRow
-        let totalHeight = CGFloat(rows) * (tileSize + tileSpacing) - tileSpacing
+        // Create puzzle data with solve/unlock status
+        struct PuzzleData {
+            let puzzle: Puzzle
+            let index: Int
+            let isSolved: Bool
+            let isUnlocked: Bool
+        }
         
-        maxScrollOffset = max(0, totalHeight - availableHeight)
-        scrollOffset = 0
-        
-        for (index, _) in allPuzzles.enumerated() {
-            let row = index / tilesPerRow
-            let col = index % tilesPerRow
-            
-            let totalTileWidth = CGFloat(tilesPerRow) * tileSize + CGFloat(tilesPerRow - 1) * tileSpacing
-            let startX = -totalTileWidth / 2
-            
-            let x = startX + CGFloat(col) * (tileSize + tileSpacing) + tileSize / 2
-            let topY = availableHeight * 0.5 - tileSize / 2
-            let y = topY - CGFloat(row) * (tileSize + tileSpacing)
-            
-            let tile = createLevelTile(
-                levelIndex: index,
+        let puzzleData = allPuzzles.enumerated().map { index, puzzle in
+            PuzzleData(
+                puzzle: puzzle,
+                index: index,
                 isSolved: solvedPuzzles.contains(index),
-                isUnlocked: index <= highestUnlocked,
-                position: CGPoint(x: x, y: y)
+                isUnlocked: index <= highestUnlocked
             )
-            
-            scrollContainer.addChild(tile)
+        }
+        
+        // Load into paginated grid view
+        paginatedGridView.loadItems(puzzleData) { [weak self] data, index, position in
+            return self?.createLevelTile(
+                levelIndex: data.index,
+                isSolved: data.isSolved,
+                isUnlocked: data.isUnlocked,
+                position: position
+            ) ?? SKNode()
         }
     }
     
@@ -112,11 +107,14 @@ class LevelSelectScene: BaseScene {
         let container = SKNode()
         container.name = "levelTile_\(levelIndex)"
         container.position = position
-        container.zPosition = 1
+        container.zPosition = 1  // Relative to paginated grid container
         
-        // Tile background
+        let tileSize: CGFloat = 80
+        
+        // Tile background - this is the main touch target
         let tile = SKShapeNode(rectOf: CGSize(width: tileSize, height: tileSize), cornerRadius: 12)
         tile.name = "tileBg"
+        tile.zPosition = 0  // Base layer
         
         if isUnlocked {
             tile.fillColor = UIColor.white
@@ -130,7 +128,7 @@ class LevelSelectScene: BaseScene {
         
         container.addChild(tile)
         
-        // Level number
+        // Level number - positioned above background but should not interfere with touch
         let numberLabel = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
         numberLabel.text = "\(levelIndex + 1)"
         numberLabel.fontSize = 24
@@ -138,66 +136,48 @@ class LevelSelectScene: BaseScene {
         numberLabel.verticalAlignmentMode = .center
         numberLabel.horizontalAlignmentMode = .center
         numberLabel.zPosition = 1
+        // Disable user interaction for text so it doesn't interfere with touch
+        numberLabel.isUserInteractionEnabled = false
         container.addChild(numberLabel)
         
         // Solved indicator
         if isSolved {
-            let checkmark = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
-            checkmark.text = "✓"
-            checkmark.fontSize = 14
-            checkmark.fontColor = AppColors.primary
-            checkmark.position = CGPoint(x: tileSize/2 - 15, y: -tileSize/2 + 10)
+            let checkmark = SKShapeNode(circleOfRadius: 6)
+            checkmark.fillColor = AppColors.primary
+            checkmark.position = CGPoint(x: 25, y: -25)
             checkmark.zPosition = 2
+            checkmark.isUserInteractionEnabled = false
             container.addChild(checkmark)
         }
         
         // Lock indicator
         if !isUnlocked {
             let lockIcon = LockIcon.create(size: 12)
-            lockIcon.position = CGPoint(x: tileSize/2 - 15, y: -tileSize/2 + 15)
+            lockIcon.position = CGPoint(x: 25, y: -25)
             lockIcon.zPosition = 2
+            lockIcon.isUserInteractionEnabled = false
             container.addChild(lockIcon)
         }
         
         return container
     }
     
-    private func updateScrollPosition() {
-        scrollOffset = max(minScrollOffset, min(maxScrollOffset, scrollOffset))
-        scrollContainer.position.y = scrollOffset
-    }
-    
     // MARK: - Touch Handling
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
         
         handleButtonTouch(touch: touch, buttonNames: ["backButton"], onPress: { button in
             GameButton.animatePress(button)
         })
         
-        lastTouchY = location.y
-        isDragging = false
-        scrollVelocity = 0
+        // Pass touch to paginated grid view
+        paginatedGridView.touchesBegan(touches, with: event)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
-        let deltaY = location.y - lastTouchY
-        
-        if abs(deltaY) > 3 {
-            isDragging = true
-        }
-        
-        if isDragging {
-            scrollOffset += deltaY
-            updateScrollPosition()
-            scrollVelocity = deltaY * 0.8
-        }
-        
-        lastTouchY = location.y
+        // Pass touch to paginated grid view
+        paginatedGridView.touchesMoved(touches, with: event)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -211,48 +191,11 @@ class LevelSelectScene: BaseScene {
             }
         })
         
-        if isDragging {
-            applyMomentumScrolling()
-            isDragging = false
-            return
-        }
-        
-        // Handle level tile taps
-        handleLevelTileTap(touch: touch)
+        // Pass touch to paginated grid view
+        paginatedGridView.touchesEnded(touches, with: event)
     }
     
-    private func applyMomentumScrolling() {
-        if abs(scrollVelocity) > 1 {
-            let momentum = scrollVelocity * 15
-            let targetOffset = scrollOffset + momentum
-            let clampedTarget = max(minScrollOffset, min(maxScrollOffset, targetOffset))
-            
-            let duration = min(0.8, abs(momentum) / 200)
-            let moveAction = SKAction.customAction(withDuration: duration) { _, elapsedTime in
-                let progress = elapsedTime / duration
-                let easedProgress = 1 - pow(1 - progress, 3)
-                let currentOffset = self.scrollOffset + (clampedTarget - self.scrollOffset) * easedProgress
-                
-                self.scrollOffset = currentOffset
-                self.updateScrollPosition()
-            }
-            
-            run(moveAction)
-        }
-    }
-    
-    private func handleLevelTileTap(touch: UITouch) {
-        let location = touch.location(in: self)
-        let touchedNode = atPoint(location)
-        
-        var levelIndex = -1
-        
-        if let nodeName = touchedNode.name, nodeName.hasPrefix("levelTile_") {
-            levelIndex = Int(String(nodeName.dropFirst("levelTile_".count))) ?? -1
-        } else if let parentName = touchedNode.parent?.name, parentName.hasPrefix("levelTile_") {
-            levelIndex = Int(String(parentName.dropFirst("levelTile_".count))) ?? -1
-        }
-        
+    private func handleLevelTileTap(levelIndex: Int) {
         guard levelIndex >= 0 && levelIndex < allPuzzles.count else { return }
         
         let highestUnlocked = progressManager.getHighestUnlockedLevel(totalPuzzles: allPuzzles.count)

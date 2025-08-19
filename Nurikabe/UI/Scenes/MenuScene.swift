@@ -41,7 +41,7 @@ final class MenuScene: BaseScene {
     }
     
     private func setupButtons() {
-        let spacing: CGFloat = 72
+        let spacing: CGFloat = 74
         
         playButton = GameButton.create(
             title: "Play",

@@ -34,12 +34,12 @@ class GameButton {
         )
         
         static let menu = Style(
-            width: 220,
+            width: 260,
             height: 64,
             cornerRadius: 20,
             backgroundColor: AppColors.buttonBackground,
             strokeColor: UIColor.clear,
-            lineWidth: 1.5,
+            lineWidth: 1.0,
             textColor: AppColors.buttonText,
             fontSize: 22,
             fontName: "HelveticaNeue-Medium"

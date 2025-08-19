@@ -38,8 +38,9 @@ class GameScene: BaseScene {
     override func setupScene() {
         progressManager = ProgressManager(config: currentGridConfig)
         loadPuzzleData()
-        setupUI()
+        setupTitle()
         setupGrid()
+        setupButtons()
         loadInitialProgress()
     }
     
@@ -67,11 +68,6 @@ class GameScene: BaseScene {
         currentPuzzle = allPuzzles[currentPuzzleIndex]
     }
     
-    private func setupUI() {
-        setupTitle()
-        setupButtons()
-    }
-    
     private func setupTitle() {
         titleLabel = createTitle("Nurikabe")
         titleLabel.position = CGPoint(x: 0, y: size.height * 0.4)
@@ -81,7 +77,7 @@ class GameScene: BaseScene {
     private func setupButtons() {
         // Back button
         backButton = createBackButton()
-        backButton.position = CGPoint(x: -130, y: -size.height * 0.4)
+        backButton.position = CGPoint(x: -(CGFloat(currentPuzzle.gridSize) * cellSize - GameButton.Style.small.width)/2, y: -size.height * 0.4)
         backButton.zPosition = 100  // Ensure it's above the grid
         addChild(backButton)
         
@@ -178,7 +174,7 @@ class GameScene: BaseScene {
         }
         
         if let submitButton = submitButton {
-            submitButton.position = CGPoint(x: 130, y: -size.height * 0.4)
+            submitButton.position = CGPoint(x: (CGFloat(currentPuzzle.gridSize) * cellSize - GameButton.Style.small.width)/2, y: -size.height * 0.4)
             submitButton.zPosition = 100  // Ensure it's above the grid
             addChild(submitButton)
         }
@@ -187,14 +183,16 @@ class GameScene: BaseScene {
     private func createSubmitButton() -> SKNode {
         return GameButton.create(
             title: "Submit",
-            actionName: "submitButton"
+            style: .small,
+            actionName: "submitButton",
         )
     }
     
     private func createNextButton() -> SKNode {
         return GameButton.create(
             title: "Next",
-            actionName: "nextButton"
+            style: .small,
+            actionName: "nextButton",
         )
     }
     

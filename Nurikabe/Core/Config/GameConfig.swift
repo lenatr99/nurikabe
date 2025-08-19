@@ -32,7 +32,7 @@ struct GameConfig {
     static let gridSizes: [GridSizeConfig] = [
         GridSizeConfig(displayName: "5x5", filename: "nurikabes_5x5_easy"),
         GridSizeConfig(displayName: "10x10", filename: "nurikabes_10x10_easy"),
-        GridSizeConfig(displayName: "15x15", filename: "nurikabes_15x15_easy", isAvailable: false)
+        GridSizeConfig(displayName: "15x15", filename: "nurikabes_15x15_medium")
     ]
     
     // MARK: - Helper Methods

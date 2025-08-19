@@ -36,14 +36,12 @@ final class GridSizeScene: BaseScene {
     
     private func setupGridSizeButtons() {
         let spacing: CGFloat = 72
-        let buttonWidth = max(220, min(size.width * 0.7, 320))
         let startY: CGFloat = 30
         
         for (index, gridConfig) in gridConfigs.enumerated() {
             let y = startY - CGFloat(index) * spacing
             let button = createGridSizeButton(
                 config: gridConfig,
-                width: buttonWidth,
                 actionName: "gridButton_\(index)"
             )
             button.position = CGPoint(x: 0, y: y)
@@ -54,35 +52,24 @@ final class GridSizeScene: BaseScene {
     
     private func createGridSizeButton(
         config: GameConfig.GridSizeConfig,
-        width: CGFloat,
         actionName: String
     ) -> SKNode {
         let style: GameButton.Style
         
         if !config.isAvailable {
             style = GameButton.Style(
-                width: width,
-                height: 64,
-                cornerRadius: 20,
+                width: GameButton.Style.menu.width,
+                height: GameButton.Style.menu.height,
+                cornerRadius: GameButton.Style.menu.cornerRadius,
                 backgroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.4),
                 strokeColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.4),
                 lineWidth: 1.0,
                 textColor: UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0),
-                fontSize: 22,
-                fontName: "HelveticaNeue-Medium"
+                fontSize: GameButton.Style.menu.fontSize,
+                fontName: GameButton.Style.menu.fontName
             )
         } else {
-            style = GameButton.Style(
-                width: width,
-                height: 64,
-                cornerRadius: 20,
-                backgroundColor: AppColors.buttonBackground,
-                strokeColor: UIColor.clear,
-                lineWidth: 1.5,
-                textColor: AppColors.buttonText,
-                fontSize: 22,
-                fontName: "HelveticaNeue-Medium"
-            )
+            style = GameButton.Style.menu
         }
         
         let button = GameButton.create(
@@ -95,7 +82,7 @@ final class GridSizeScene: BaseScene {
         
         if !config.isAvailable {
             let lockIcon = LockIcon.create(size: 12, color: UIColor.gray)
-            lockIcon.position = CGPoint(x: width/2 - 16, y: style.height/2 - 16)
+            lockIcon.position = CGPoint(x: style.width/2 - 16, y: style.height/2 - 16)
             lockIcon.zPosition = 5
             lockIcon.alpha = 0.7
             button.addChild(lockIcon)
