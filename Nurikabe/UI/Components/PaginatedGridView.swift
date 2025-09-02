@@ -332,34 +332,35 @@ class PaginatedGridView: SKNode {
     }
     
     private func handleItemTap(at location: CGPoint) {
-        let pageLocation = convert(location, to: pagesContainer)
+        let currentPage = pages[currentPageIndex]
+        let localLocation = convert(location, to: currentPage)
+        let tappedNode = currentPage.atPoint(localLocation)
         
-        for (pageIndex, page) in pages.enumerated() {
-            if pageIndex == currentPageIndex {
-                let localLocation = convert(pageLocation, to: page)
-                let tappedNode = page.atPoint(localLocation)
-                
-                // Look up the node hierarchy to find the correct item container
-                var currentNode: SKNode? = tappedNode
-                while currentNode != nil {
-                    if let nodeName = currentNode?.name,
-                       nodeName.hasPrefix("levelTile_"),
-                       let itemIndex = Int(String(nodeName.dropFirst("levelTile_".count))) {
-                        onItemTapped?(itemIndex)
-                        return
-                    }
-                    // Also check for the old item_ naming convention for compatibility
-                    if let nodeName = currentNode?.name,
-                       nodeName.hasPrefix("item_"),
-                       let itemIndex = Int(String(nodeName.dropFirst("item_".count))) {
-                        onItemTapped?(itemIndex)
-                        return
-                    }
-                    currentNode = currentNode?.parent
-                }
-                break
+        NSLog("🔍 Touch at location: \(location), localLocation: \(localLocation), currentPage: \(currentPageIndex)")
+        NSLog("🎯 Page \(currentPageIndex): tappedNode: \(tappedNode.name ?? "nil")")
+        
+        // Look up the node hierarchy to find the correct item container
+        var currentNode: SKNode? = tappedNode
+        while currentNode != nil {
+            NSLog("🔍 Checking node: \(currentNode?.name ?? "nil")")
+            if let nodeName = currentNode?.name,
+               nodeName.hasPrefix("levelTile_"),
+               let itemIndex = Int(String(nodeName.dropFirst("levelTile_".count))) {
+                NSLog("✅ Found level tile: \(itemIndex)")
+                onItemTapped?(itemIndex)
+                return
             }
+            // Also check for the old item_ naming convention for compatibility
+            if let nodeName = currentNode?.name,
+               nodeName.hasPrefix("item_"),
+               let itemIndex = Int(String(nodeName.dropFirst("item_".count))) {
+                NSLog("✅ Found item: \(itemIndex)")
+                onItemTapped?(itemIndex)
+                return
+            }
+            currentNode = currentNode?.parent
         }
+        NSLog("❌ No valid item found")
     }
     
     // MARK: - Animation Helpers

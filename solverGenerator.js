@@ -125,6 +125,37 @@ function solveObject(puzzleString, diff){
 			}
 
 		}
+		
+		// Check for stray islands without numbers
+		if(solved == "true"){
+			var visitedIslandCells = new Array();
+			for (var x=0;x < (this.height);x++) {
+				for (var y=0; y < (this.width);y++) {
+					if((this.puzzleState[x][y] == "*" || Number.isInteger(this.puzzleState[x][y] * 1)) && visitedIslandCells.indexOf(x + "-" + y) == -1){
+						var islandCells = travelCells(this.width, this.height, x, y, this.puzzleState, "notwalls");
+						visitedIslandCells.push.apply(visitedIslandCells, islandCells);
+						
+						// Check if this island contains at least one number
+						var hasNumber = false;
+						for(var i = 0; i < islandCells.length; i++){
+							var temp = islandCells[i].split("-");
+							var cellX = temp[0] * 1;
+							var cellY = temp[1] * 1;
+							if(Number.isInteger(this.puzzleState[cellX][cellY] * 1)){
+								hasNumber = true;
+								break;
+							}
+						}
+						if(!hasNumber){
+							console.log("Found stray island at cells:", islandCells);
+							solved = "false";
+							break;
+						}
+					}
+				}
+				if(solved == "false") break;
+			}
+		}
 		//console.log(groupsArray);
 
 		this.solutionString = solved + ":" + solveCount + ":" + solution;

@@ -97,7 +97,7 @@ class GameScene: BaseScene {
             actionName: "clearButton"
         )
         
-        let gridSize = min(size.width * 0.8, size.height * 0.6)
+        let gridSize = min(size.width * 0.9, size.height * 0.7)
         clearButton.position = CGPoint(
             x: (gridSize - 45)/2,
             y: -(gridSize + 35)/2 - 10
@@ -120,7 +120,7 @@ class GameScene: BaseScene {
     private func rebuildGrid() {
         gridContainer.removeAllChildren()
         
-        let maxGridSize = min(size.width * 0.8, size.height * 0.6)
+        let maxGridSize = min(size.width * 0.9, size.height * 0.7)
         cellSize = maxGridSize / CGFloat(currentPuzzle.gridSize)
         
         for row in 0..<currentPuzzle.gridSize {
@@ -354,7 +354,7 @@ class GameScene: BaseScene {
     // MARK: - UI Feedback
     
     private func showSolvedMessage() {
-        let overlay = SKShapeNode(rectOf: CGSize(width: size.width * 0.8, height: min(size.width * 0.8, size.height * 0.6)))
+        let overlay = SKShapeNode(rectOf: CGSize(width: size.width * 0.9, height: min(size.width * 0.9, size.height * 0.7)))
         overlay.fillColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
         overlay.strokeColor = AppColors.primary
         overlay.lineWidth = 3.0

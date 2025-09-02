@@ -2,31 +2,440 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Nurikabe Batch Generator</title>
+    <title>Nurikabe Puzzle Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      :root { --cell: 32px; --gap: 4px; --wall: #111; --bg: #fafafa; --ink: #222; }
-      body { font: 16px/1.4 system-ui, sans-serif; padding: 24px; background: var(--bg); color: var(--ink); }
-      button { padding: 10px 14px; border-radius: 10px; border: 1px solid #ccc; cursor: pointer; background: #fff; }
-      #log { white-space: pre-wrap; margin: 16px 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-      .gridlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-      .card { background: #fff; border: 1px solid #e7e7e7; border-radius: 12px; padding: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.04); }
-      .card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
-      .grids { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-      .label { font-size: 12px; color: #666; margin: 4px 0; }
-      .board { display: grid; gap: var(--gap); }
-      .cell { width: var(--cell); height: var(--cell); display: grid; place-items: center; border-radius: 6px; background: #fff; border: 1px solid #ececec; font-weight: 600; user-select: none; }
-      .cell.wall { background: var(--wall); border-color: var(--wall); color: #fff; }
-      .cell.unknown { color: #bbb; }
-      .legend { font-size: 12px; color: #666; margin-top: 8px; }
+      :root { 
+        --cell: 32px; 
+        --gap: 4px; 
+        --wall: #1a1a1a; 
+        --bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        --ink: #2d3748;
+        --primary: #667eea;
+        --primary-dark: #5a67d8;
+        --secondary: #764ba2;
+        --surface: rgba(255, 255, 255, 0.95);
+        --border: rgba(255, 255, 255, 0.2);
+        --shadow: rgba(0, 0, 0, 0.1);
+        --text-light: #718096;
+        --success: #48bb78;
+        --warning: #ed8936;
+      }
+      
+      * {
+        box-sizing: border-box;
+      }
+      
+      body { 
+        font: 16px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        min-height: 100vh;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      
+      .header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+      }
+      
+      .controls {
+        background: var(--surface);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px var(--shadow);
+      }
+      
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .form-group label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--ink);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .form-group input,
+      .form-group select {
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        background: white;
+      }
+      
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      
+      .size-inputs {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      
+      .size-inputs span {
+        font-weight: 600;
+        color: var(--text-light);
+        text-align: center;
+      }
+      
+      .generate-btn {
+        width: 100%;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+      
+      .generate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+      }
+      
+      .generate-btn:active {
+        transform: translateY(0);
+      }
+      
+      .generate-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      .progress-container {
+        margin-top: 1rem;
+        display: none;
+      }
+      
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #e2e8f0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+      
+      .progress-text {
+        text-align: center;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-light);
+      }
+      
+      #log { 
+        background: rgba(0, 0, 0, 0.7);
+        color: #00ff00;
+        padding: 1rem;
+        border-radius: 12px;
+        font-family: 'SF Mono', Monaco, 'Inconsolata', 'Roboto Mono', Consolas, monospace;
+        font-size: 0.8rem;
+        max-height: 200px;
+        overflow-y: auto;
+        margin-bottom: 2rem;
+        white-space: pre-wrap;
+        display: none;
+      }
+      
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      
+      .stat-card {
+        background: var(--surface);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 16px var(--shadow);
+      }
+      
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+      }
+      
+      .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .gridlist { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); 
+        gap: 1.5rem; 
+      }
+      
+      .card { 
+        background: var(--surface);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        box-shadow: 0 8px 32px var(--shadow);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        overflow: hidden;
+      }
+      
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card h3 { 
+        margin: 0 0 1rem; 
+        font-size: 1.1rem; 
+        font-weight: 600;
+        color: var(--ink);
+      }
+      
+      .grids { 
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+      }
+      
+      .grid-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+      }
+      
+      .label { 
+        font-size: 0.75rem; 
+        color: var(--text-light); 
+        margin: 0 0 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+      }
+      
+      .board { 
+        display: grid; 
+        gap: var(--gap);
+        justify-content: center;
+        max-width: 100%;
+        width: fit-content;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
+      
+      .cell { 
+        width: var(--cell); 
+        height: var(--cell); 
+        display: grid; 
+        place-items: center; 
+        border-radius: 6px; 
+        background: #fff; 
+        border: 1px solid #e2e8f0; 
+        font-weight: 600; 
+        user-select: none;
+        font-size: 0.8rem;
+        transition: all 0.1s ease;
+        min-width: 0; /* Allow shrinking */
+      }
+      
+      .cell.wall { 
+        background: var(--wall); 
+        border-color: var(--wall); 
+        color: #fff; 
+      }
+      
+      .cell.unknown { 
+        color: #cbd5e0;
+        background: #f7fafc;
+      }
+      
+      .legend { 
+        font-size: 0.75rem; 
+        color: var(--text-light); 
+        margin-top: 1rem;
+        text-align: center;
+        font-style: italic;
+      }
+      
+      .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .status-badge.solved {
+        background: rgba(72, 187, 120, 0.1);
+        color: var(--success);
+      }
+      
+      .status-badge.unsolved {
+        background: rgba(237, 137, 54, 0.1);
+        color: var(--warning);
+      }
+      
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+        
+        .header h1 {
+          font-size: 2rem;
+        }
+        
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .gridlist {
+          grid-template-columns: 1fr;
+        }
+        
+        .grids {
+          gap: 1.5rem;
+        }
+        
+        :root {
+          --cell: 20px;
+          --gap: 2px;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        :root {
+          --cell: 16px;
+          --gap: 1px;
+        }
+        
+        .card {
+          padding: 1rem;
+        }
+        
+        .grids {
+          gap: 1rem;
+        }
+      }
     </style>
-    <!-- IMPORTANT: defer so the DOM exists before app.js runs -->
     <script src="app.js" defer></script>
   </head>
   <body>
-    <button id="gen">Generate 50 × 5×5 (easy) + show solutions</button>
-    <div id="log"></div>
-    <!-- This must exist; your error was because this was null -->
-    <div id="gallery" class="gridlist"></div>
+    <div class="container">
+      <div class="header">
+        <h1>🧩 Nurikabe Generator</h1>
+        <p>Create beautiful Nurikabe puzzles with customizable difficulty and size</p>
+      </div>
+      
+      <div class="controls">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="puzzleCount">Number of Puzzles</label>
+            <input type="number" id="puzzleCount" min="1" max="100" value="10">
+          </div>
+          
+          <div class="form-group">
+            <label>Puzzle Size</label>
+            <div class="size-inputs">
+              <input type="number" id="puzzleWidth" min="3" max="20" value="10" placeholder="Width">
+              <span>×</span>
+              <input type="number" id="puzzleHeight" min="3" max="20" value="10" placeholder="Height">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="difficulty">Difficulty</label>
+            <select id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+              <option value="harder">Harder</option>
+              <option value="max">Maximum</option>
+            </select>
+          </div>
+        </div>
+        
+        <button id="generate" class="generate-btn">
+          ✨ Generate Puzzles
+        </button>
+        
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-text" id="progressText">Generating puzzles...</div>
+        </div>
+      </div>
+      
+      <div id="stats" class="stats" style="display: none;"></div>
+      
+      <div id="log"></div>
+      
+      <div id="gallery" class="gridlist"></div>
+    </div>
   </body>
 </html>
