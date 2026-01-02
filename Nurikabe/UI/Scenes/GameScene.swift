@@ -496,23 +496,41 @@ class GameScene: BaseScene {
         guard let cell = gameGrid.getCell(row: row, col: col),
               let cellNode = cell.node else { return }
         
-        // Create a highlight effect
-        let highlight = SKShapeNode(rectOf: CGSize(width: cellSize, height: cellSize))
-        highlight.fillColor = UIColor.yellow.withAlphaComponent(0.5)
-        highlight.strokeColor = UIColor.yellow
-        highlight.lineWidth = 3
-        highlight.zPosition = 100
-        highlight.position = cellNode.position
-        gridContainer.addChild(highlight)
+        // Crop node to clip shine within cell bounds
+        let cropNode = SKCropNode()
+        cropNode.position = cellNode.position
+        cropNode.zPosition = 50
+        gridContainer.addChild(cropNode)
         
-        // Animate and remove
-        let fadeIn = SKAction.fadeIn(withDuration: 0.2)
-        let wait = SKAction.wait(forDuration: 0.8)
-        let fadeOut = SKAction.fadeOut(withDuration: 0.3)
-        let remove = SKAction.removeFromParent()
+        // Mask = cell shape
+        let mask = SKShapeNode(rectOf: CGSize(width: cellSize - 2, height: cellSize - 2))
+        mask.fillColor = .white
+        cropNode.maskNode = mask
         
-        highlight.alpha = 0
-        highlight.run(.sequence([fadeIn, wait, fadeOut, remove]))
+        // Diagonal white shine bar
+        let shineWidth: CGFloat = cellSize * 0.35
+        let shine = SKShapeNode(rectOf: CGSize(width: shineWidth, height: cellSize * 2))
+        shine.fillColor = UIColor.white.withAlphaComponent(0.7)
+        shine.strokeColor = .clear
+        shine.zRotation = .pi / 5  // ~36° angle
+        shine.position = CGPoint(x: -cellSize * 1.2, y: 0)
+        cropNode.addChild(shine)
+        
+        // Sweep animation: 3 passes over ~2.5 seconds
+        let sweepDuration: TimeInterval = 0.8
+        let pauseBetween: TimeInterval = 0.5
+        
+        let sweepAcross = SKAction.moveTo(x: cellSize * 1.2, duration: sweepDuration)
+        sweepAcross.timingMode = .easeInEaseOut
+        let reset = SKAction.moveTo(x: -cellSize * 1.2, duration: 0)
+        let pause = SKAction.wait(forDuration: pauseBetween)
+        
+        let singleSweep = SKAction.sequence([sweepAcross, reset, pause])
+        let allSweeps = SKAction.repeat(singleSweep, count: 4)
+        
+        shine.run(.sequence([allSweeps, .removeFromParent()])) {
+            cropNode.removeFromParent()
+        }
     }
     
     private func showMessage(_ text: String) {

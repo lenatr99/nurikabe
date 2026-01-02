@@ -101,6 +101,11 @@ class LevelSelectScene: BaseScene {
                 position: position
             ) ?? SKNode()
         }
+        
+        // Navigate to the page containing the highest unlocked level
+        let itemsPerPage = paginatedGridView.configuration.itemsPerPage
+        let targetPage = highestUnlocked / itemsPerPage
+        paginatedGridView.setCurrentPage(targetPage, animated: false)
     }
     
     private func createLevelTile(levelIndex: Int, isSolved: Bool, isUnlocked: Bool, position: CGPoint) -> SKNode {

@@ -119,22 +119,22 @@ final class MenuScene: BaseScene {
     private func setupDecorativeElements() {
         let decorativeLayer = SKNode()
         decorativeLayer.zPosition = -40
-        decorativeLayer.alpha = 0.15
+        decorativeLayer.alpha = 0.08
         addChild(decorativeLayer)
         
-        // Large circle in top-right
+        // Large circle in top-right - subtle dark theme colors
         let circle1 = SKShapeNode(circleOfRadius: size.width * 0.25)
-        circle1.fillColor = UIColor(red: 1.0, green: 0.88, blue: 0.95, alpha: 0.12)
-        circle1.strokeColor = UIColor(red: 0.95, green: 0.75, blue: 0.88, alpha: 0.15)
-        circle1.lineWidth = 2.0
+        circle1.fillColor = AppColors.primary.withAlphaComponent(0.06)
+        circle1.strokeColor = AppColors.primary.withAlphaComponent(0.12)
+        circle1.lineWidth = 1.5
         circle1.position = CGPoint(x: size.width * 0.35, y: size.height * 0.3)
         decorativeLayer.addChild(circle1)
         
         // Medium circle in bottom-left
         let circle2 = SKShapeNode(circleOfRadius: size.width * 0.15)
-        circle2.fillColor = UIColor(red: 0.98, green: 0.82, blue: 0.92, alpha: 0.08)
-        circle2.strokeColor = UIColor(red: 0.92, green: 0.65, blue: 0.82, alpha: 0.2)
-        circle2.lineWidth = 1.5
+        circle2.fillColor = AppColors.primary.withAlphaComponent(0.04)
+        circle2.strokeColor = AppColors.primary.withAlphaComponent(0.1)
+        circle2.lineWidth = 1.0
         circle2.position = CGPoint(x: -size.width * 0.3, y: -size.height * 0.25)
         decorativeLayer.addChild(circle2)
         

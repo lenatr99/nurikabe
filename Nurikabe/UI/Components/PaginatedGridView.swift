@@ -391,6 +391,10 @@ class PaginatedGridView: SKNode {
         return currentPageIndex
     }
     
+    var configuration: Configuration {
+        return config
+    }
+    
     var pageCount: Int {
         return totalPages
     }
