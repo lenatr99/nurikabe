@@ -24,20 +24,27 @@ class BaseScene: SKScene {
     
     /// Creates a standard background with overlays and effects
     func setupStandardBackground() {
-        // Elegant radial overlay for depth
-        let overlay = SKShapeNode(rectOf: size, cornerRadius: 0)
+        // Elegant overlay for depth (slightly oversize to avoid edge halos)
+        let oversize = CGSize(width: size.width + 4, height: size.height + 4)
+        let overlay = SKShapeNode(rectOf: oversize, cornerRadius: 0)
         overlay.fillColor = UIColor(red: 0.92, green: 0.65, blue: 0.82, alpha: 0.12)
+        overlay.strokeColor = .clear
+        overlay.lineWidth = 0
+        overlay.isAntialiased = false
         overlay.alpha = 1.0
         overlay.zPosition = -95
-        overlay.blendMode = .screen
+        overlay.blendMode = .alpha
         addChild(overlay)
         
         // Subtle animated shimmer
-        let shimmer = SKShapeNode(rectOf: size, cornerRadius: 0)
+        let shimmer = SKShapeNode(rectOf: oversize, cornerRadius: 0)
         shimmer.fillColor = UIColor(red: 1.0, green: 0.85, blue: 0.95, alpha: 0.08)
+        shimmer.strokeColor = .clear
+        shimmer.lineWidth = 0
+        shimmer.isAntialiased = false
         shimmer.alpha = 0.0
         shimmer.zPosition = -90
-        shimmer.blendMode = .screen
+        shimmer.blendMode = .alpha
         addChild(shimmer)
         
         let shimmerPulse = SKAction.sequence([
@@ -56,6 +63,53 @@ class BaseScene: SKScene {
         titleLabel.alpha = 1
         titleLabel.zPosition = 10
         return titleLabel
+    }
+
+    /// Creates an outlined label by layering two labels
+    func createStrokedLabel(
+        text: String,
+        fontName: String,
+        fontSize: CGFloat,
+        fillColor: UIColor,
+        strokeColor: UIColor,
+        strokeWidth: CGFloat
+    ) -> SKNode {
+        let container = SKNode()
+        
+        let fill = SKLabelNode(fontNamed: fontName)
+        fill.text = text
+        fill.fontSize = fontSize
+        fill.fontColor = fillColor
+        fill.verticalAlignmentMode = .center
+        fill.horizontalAlignmentMode = .center
+        
+        // Create stroke by duplicating label several times around
+        let angles: [CGFloat] = [
+            0,
+            .pi / 4,
+            .pi / 2,
+            3 * .pi / 4,
+            .pi,
+            5 * .pi / 4,
+            3 * .pi / 2,
+            7 * .pi / 4
+        ]
+        for angle in angles {
+            let dx = cos(angle) * strokeWidth
+            let dy = sin(angle) * strokeWidth
+            let stroke = SKLabelNode(fontNamed: fontName)
+            stroke.text = text
+            stroke.fontSize = fontSize
+            stroke.fontColor = strokeColor
+            stroke.verticalAlignmentMode = .center
+            stroke.horizontalAlignmentMode = .center
+            stroke.position = CGPoint(x: dx, y: dy)
+            stroke.zPosition = -1
+            container.addChild(stroke)
+        }
+        
+        container.addChild(fill)
+        return container
     }
     
     /// Creates a standard back button

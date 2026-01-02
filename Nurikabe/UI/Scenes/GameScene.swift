@@ -13,6 +13,7 @@ class GameScene: BaseScene {
     // MARK: - Components
     private var gameGrid: GameGrid!
     private var progressManager: ProgressManager!
+    private var commandManager: CommandManager!
     private var allPuzzles: [Puzzle] = []
     private var currentPuzzle: Puzzle!
     private var currentPuzzleIndex = 0
@@ -22,7 +23,7 @@ class GameScene: BaseScene {
     private var titleLabel: SKLabelNode!
     private var backButton: SKNode!
     private var submitButton: SKNode!
-    private var clearButton: SKNode!
+    private var gameToolbar: SKNode!
     private var gridContainer: SKNode!
     
     // MARK: - Game State
@@ -34,13 +35,17 @@ class GameScene: BaseScene {
     private var isDragging = false
     private var dragFillState: CellState = .empty
     private var lastDraggedCell: (row: Int, col: Int)? = nil
+    private var currentBatchCommand: BatchCellCommand?
     
     override func setupScene() {
         progressManager = ProgressManager(config: currentGridConfig)
+        commandManager = CommandManager()
+        setupCommandManagerCallbacks()
         loadPuzzleData()
         setupTitle()
         setupGrid()
         setupButtons()
+        setupToolbar()
         loadInitialProgress()
     }
     
@@ -58,6 +63,12 @@ class GameScene: BaseScene {
     }
     
     // MARK: - Setup Methods
+    
+    private func setupCommandManagerCallbacks() {
+        commandManager.onHistoryChanged = { [weak self] in
+            self?.updateToolbarButtons()
+        }
+    }
     
     private func loadPuzzleData() {
         allPuzzles = PuzzleLoader.loadPuzzles(from: currentGridConfig.filename)
@@ -83,27 +94,31 @@ class GameScene: BaseScene {
         
         // Submit button
         updateSubmitButton()
-        
-        // Clear button
-        clearButton = GameButton.create(
-            title: "Clear",
-            style: GameButton.Style(
-                width: 45, height: 35, cornerRadius: 12,
-                backgroundColor: UIColor(red: 0, green: 0, blue: 0, alpha: 0.2),
-                strokeColor: UIColor.clear, lineWidth: 0,
-                textColor: UIColor.white, fontSize: 15,
-                fontName: "HelveticaNeue-Medium"
-            ),
-            actionName: "clearButton"
-        )
-        
+    }
+    
+    private func setupToolbar() {
         let gridSize = min(size.width * 0.9, size.height * 0.7)
-        clearButton.position = CGPoint(
-            x: (gridSize - 45)/2,
-            y: -(gridSize + 35)/2 - 10
+        
+        // Create toolbar with proper width matching the grid
+        let toolbarStyle = GameToolbar.Style(
+            width: gridSize,
+            backgroundColor: UIColor.white
         )
-        clearButton.zPosition = 100  // Ensure it's above the grid
-        addChild(clearButton)
+        
+        let actions = [
+            ToolbarAction.undo,
+            ToolbarAction.redo,
+            ToolbarAction.clear,
+            ToolbarAction.flood,
+        ]
+        
+        gameToolbar = GameToolbar.create(style: toolbarStyle, actions: actions)
+        gameToolbar.position = CGPoint(x: 0, y: gridSize/2 + 30) // Above the grid
+        gameToolbar.zPosition = 100
+        addChild(gameToolbar)
+        
+        // Initial state update
+        updateToolbarButtons()
     }
     
     private func setupGrid() {
@@ -147,7 +162,7 @@ class GameScene: BaseScene {
             if self.progressManager.isPuzzleSolved(self.currentPuzzleIndex) {
                 self.isSubmitEnabled = false
                 self.updateSubmitButton()
-                self.clearButton.isHidden = true
+                self.updateToolbarButtons() // keep visible but disabled
             }
         }
     }
@@ -196,6 +211,21 @@ class GameScene: BaseScene {
         )
     }
     
+    private func updateToolbarButtons() {
+        guard let toolbar = gameToolbar else { return }
+        
+        // Update button states
+        let isSolved = progressManager.isPuzzleSolved(currentPuzzleIndex)
+        
+        // When solved: keep toolbar visible but disable all actions
+        let allowActions = !isSolved
+        
+        GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "undoButton", enabled: allowActions && commandManager.canUndo)
+        GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "redoButton", enabled: allowActions && commandManager.canRedo)
+        GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "clearButton", enabled: allowActions)
+        GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "floodButton", enabled: allowActions)
+    }
+    
     // MARK: - Touch Handling
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -204,10 +234,14 @@ class GameScene: BaseScene {
         let touchedNode = atPoint(location)
         
         // Handle button touches
-        let buttonNames = ["backButton", "submitButton", "nextButton", "clearButton"]
+        let buttonNames = ["backButton", "submitButton", "nextButton"]
         handleButtonTouch(touch: touch, buttonNames: buttonNames, onPress: { button in
             GameButton.animatePress(button)
         })
+        
+        // Handle toolbar button touches
+        let toolbarButtonNames = ["undoButton", "redoButton", "clearButton", "floodButton"]
+        handleToolbarTouch(touch: touch, buttonNames: toolbarButtonNames)
         
         // Handle grid cell taps
         handleCellTouch(touch: touch, location: location, touchedNode: touchedNode)
@@ -231,7 +265,11 @@ class GameScene: BaseScene {
             }
             
             if let cell = gameGrid.getCell(row: cellCoordinates.row, col: cellCoordinates.col),
-               !cell.isClue {
+               !cell.isClue && cell.state != dragFillState {
+                
+                // Add to batch command
+                currentBatchCommand?.addCellChange(row: cellCoordinates.row, col: cellCoordinates.col, newState: dragFillState)
+                
                 cell.state = dragFillState
                 GridRenderer.updateCellVisual(cell, cellSize: cellSize)
                 progressManager.savePuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
@@ -241,12 +279,18 @@ class GameScene: BaseScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Finalize batch command if we were dragging
+        if isDragging, let batchCommand = currentBatchCommand, !batchCommand.isEmpty {
+            commandManager.executeCommand(batchCommand)
+        }
+        
         isDragging = false
         lastDraggedCell = nil
+        currentBatchCommand = nil
         
         guard let touch = touches.first else { return }
         
-        let buttonNames = ["backButton", "submitButton", "nextButton", "clearButton"]
+        let buttonNames = ["backButton", "submitButton", "nextButton"]
         handleButtonTouch(touch: touch, buttonNames: buttonNames, onRelease: { button, buttonName in
             GameButton.animateRelease(button) {
                 self.handleButtonAction(buttonName)
@@ -257,9 +301,26 @@ class GameScene: BaseScene {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         isDragging = false
         lastDraggedCell = nil
+        currentBatchCommand = nil
     }
     
     // MARK: - Game Logic
+    
+    private func handleToolbarTouch(touch: UITouch, buttonNames: [String]) {
+        guard let toolbar = gameToolbar else { return }
+        let location = touch.location(in: toolbar)
+        let _ = toolbar.atPoint(location)
+        
+        // Determine which button node (by ancestry) was touched; make whole button clickable
+        let nodeAtPoint = toolbar.atPoint(location)
+        if let buttonNode = nodeAtPoint.closestAncestor(namedIn: buttonNames) {
+            // Skip disabled buttons
+            if buttonNode.alpha < 0.9 { return }
+            GameToolbar.animateButtonPress(buttonNode) {
+                if let name = buttonNode.name { self.handleButtonAction(name) }
+            }
+        }
+    }
     
     private func handleCellTouch(touch: UITouch, location: CGPoint, touchedNode: SKNode) {
         var cellCoordinates: (row: Int, col: Int)?
@@ -275,14 +336,19 @@ class GameScene: BaseScene {
               !cell.isClue else { return }
         
         let newState = getNextCellState(from: cell.state)
-        cell.state = newState
+        
+        // Create and execute command
+        let command = CellStateCommand(gameGrid: gameGrid, row: coordinates.row, col: coordinates.col, newState: newState)
+        commandManager.executeCommand(command)
+        
         GridRenderer.updateCellVisual(cell, cellSize: cellSize)
         progressManager.savePuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
         
-        // Setup drag state
+        // Setup drag state with batch command
         isDragging = true
         dragFillState = newState
         lastDraggedCell = coordinates
+        currentBatchCommand = BatchCellCommand(gameGrid: gameGrid)
     }
     
     private func getNextCellState(from currentState: CellState) -> CellState {
@@ -304,6 +370,20 @@ class GameScene: BaseScene {
             loadNextPuzzle()
         case "clearButton":
             clearPuzzle()
+        case "floodButton":
+            floodPuzzle()
+        case "undoButton":
+            if commandManager.canUndo {
+                commandManager.undo()
+                updateGridVisuals()
+                progressManager.savePuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
+            }
+        case "redoButton":
+            if commandManager.canRedo {
+                commandManager.redo()
+                updateGridVisuals()
+                progressManager.savePuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
+            }
         default:
             break
         }
@@ -313,7 +393,7 @@ class GameScene: BaseScene {
         if SolutionChecker.checkSolution(grid: gameGrid, puzzle: currentPuzzle) {
             progressManager.markPuzzleAsSolved(currentPuzzleIndex)
             isSubmitEnabled = false
-            clearButton.isHidden = true
+            gameToolbar.isHidden = true
             showSolvedMessage()
             updateSubmitButton()
         } else {
@@ -322,18 +402,29 @@ class GameScene: BaseScene {
     }
     
     private func clearPuzzle() {
-        gameGrid.resetAllNonClueCells()
+        let clearCommand = ClearGridCommand(gameGrid: gameGrid)
+        commandManager.executeCommand(clearCommand)
         updateGridVisuals()
         progressManager.clearPuzzleProgress(currentPuzzleIndex)
+    }
+    
+    private func floodPuzzle() {
+        let floodCommand = FloodGridCommand(gameGrid: gameGrid)
+        commandManager.executeCommand(floodCommand)
+        updateGridVisuals()
+        progressManager.savePuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
     }
     
     private func loadNextPuzzle() {
         // Remove solved overlay
         childNode(withName: "solvedOverlay")?.removeFromParent()
-        clearButton.isHidden = false
+        gameToolbar.isHidden = false
         
         currentPuzzleIndex = (currentPuzzleIndex + 1) % allPuzzles.count
         currentPuzzle = allPuzzles[currentPuzzleIndex]
+        
+        // Clear command history for new puzzle
+        commandManager.clearHistory()
         
         isNavigatingFromNext = true
         gameGrid.setupPuzzle(currentPuzzle)
@@ -341,7 +432,7 @@ class GameScene: BaseScene {
         
         if progressManager.isPuzzleSolved(currentPuzzleIndex) {
             isSubmitEnabled = false
-            clearButton.isHidden = true
+            updateToolbarButtons() // keep visible but disabled
         } else {
             isSubmitEnabled = true
             _ = progressManager.loadPuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
@@ -363,12 +454,14 @@ class GameScene: BaseScene {
         overlay.alpha = 0
         overlay.name = "solvedOverlay"
         
-        let solvedLabel = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
-        solvedLabel.text = "SOLVED"
-        solvedLabel.fontSize = 48
-        solvedLabel.fontColor = AppColors.primary
-        solvedLabel.verticalAlignmentMode = .center
-        solvedLabel.horizontalAlignmentMode = .center
+        let solvedLabel = createStrokedLabel(
+            text: "SOLVED",
+            fontName: "HelveticaNeue-Bold",
+            fontSize: 48,
+            fillColor: AppColors.primary,
+            strokeColor: UIColor.white,
+            strokeWidth: 2
+        )
         solvedLabel.position = CGPoint(x: 0, y: 15)
         solvedLabel.zPosition = 1
         

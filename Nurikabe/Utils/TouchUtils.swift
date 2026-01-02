@@ -6,6 +6,28 @@
 //
 
 import SpriteKit
+extension SKNode {
+    /// Walk up the parent chain to find a node whose name matches any in the list
+    func closestAncestor(namedIn names: [String]) -> SKNode? {
+        var current: SKNode? = self
+        while let node = current {
+            if let nodeName = node.name, names.contains(nodeName) { return node }
+            current = node.parent
+        }
+        return nil
+    }
+}
+
+extension TouchUtils {
+    static func findAncestor(_ node: SKNode, prefix: String) -> SKNode? {
+        var current: SKNode? = node
+        while let c = current {
+            if let name = c.name, name.hasPrefix(prefix) { return c }
+            current = c.parent
+        }
+        return nil
+    }
+}
 
 /// Utility functions for touch handling
 struct TouchUtils {

@@ -21,41 +21,47 @@ class GameButton {
         let fontSize: CGFloat
         let fontName: String
         
-        static let `default` = Style(
-            width: 150,
-            height: 50,
-            cornerRadius: 12,
-            backgroundColor: AppColors.buttonBackground,
-            strokeColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.3),
-            lineWidth: 1.0,
-            textColor: AppColors.buttonText,
-            fontSize: 28,
-            fontName: "HelveticaNeue-Medium"
-        )
+        static var `default`: Style {
+            Style(
+                width: 150,
+                height: 50,
+                cornerRadius: 12,
+                backgroundColor: AppColors.buttonBackground,
+                strokeColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.3),
+                lineWidth: 1.0,
+                textColor: AppColors.primary,
+                fontSize: 28,
+                fontName: "HelveticaNeue-Medium"
+            )
+        }
         
-        static let menu = Style(
-            width: 260,
-            height: 64,
-            cornerRadius: 20,
-            backgroundColor: AppColors.buttonBackground,
-            strokeColor: UIColor.clear,
-            lineWidth: 1.0,
-            textColor: AppColors.buttonText,
-            fontSize: 22,
-            fontName: "HelveticaNeue-Medium"
-        )
+        static var menu: Style {
+            Style(
+                width: 260,
+                height: 64,
+                cornerRadius: 20,
+                backgroundColor: AppColors.buttonBackground,
+                strokeColor: UIColor.clear,
+                lineWidth: 1.0,
+                textColor: AppColors.primary,
+                fontSize: 22,
+                fontName: "HelveticaNeue-Medium"
+            )
+        }
         
-        static let small = Style(
-            width: 120,
-            height: 45,
-            cornerRadius: 12,
-            backgroundColor: AppColors.buttonBackground,
-            strokeColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.3),
-            lineWidth: 1.0,
-            textColor: AppColors.buttonText,
-            fontSize: 24,
-            fontName: "HelveticaNeue-Medium"
-        )
+        static var small: Style {
+            Style(
+                width: 120,
+                height: 45,
+                cornerRadius: 12,
+                backgroundColor: AppColors.buttonBackground,
+                strokeColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.3),
+                lineWidth: 1.0,
+                textColor: AppColors.primary,
+                fontSize: 24,
+                fontName: "HelveticaNeue-Medium"
+            )
+        }
     }
     
     static func create(
@@ -87,6 +93,7 @@ class GameButton {
             iconLabel.horizontalAlignmentMode = .center
             iconLabel.position = CGPoint(x: -style.width * 0.34, y: 0)
             iconLabel.zPosition = 2
+            iconLabel.name = "icon"
             container.addChild(iconLabel)
         }
         
@@ -99,6 +106,7 @@ class GameButton {
         label.horizontalAlignmentMode = .center
         label.position = CGPoint(x: icon != nil ? 8 : 0, y: 0)
         label.zPosition = 2
+        label.name = "label"
         container.addChild(label)
         
         return container

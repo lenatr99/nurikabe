@@ -107,16 +107,11 @@ final class MenuScene: BaseScene {
     }
     
     private func showSettings() {
-        let pop = SKLabelNode(fontNamed: FontUtils.preferredRegularFont())
-        pop.text = "Settings coming soon"
-        pop.fontSize = 18
-        pop.alpha = 0
-        pop.zPosition = 999
-        addChild(pop)
-        pop.run(.sequence([.fadeIn(withDuration: 0.15),
-                          .wait(forDuration: 1.0),
-                          .fadeOut(withDuration: 0.25),
-                          .removeFromParent()]))
+        guard let view = view else { return }
+        let settings = SettingsScene(size: view.bounds.size)
+        settings.scaleMode = .aspectFill
+        let transition = SKTransition.fade(withDuration: 0.5)
+        view.presentScene(settings, transition: transition)
     }
     
     // MARK: - Visual Effects (kept from original but simplified)

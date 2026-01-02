@@ -8,18 +8,33 @@
 import UIKit
 
 struct AppColors {
-    // MARK: - Primary Colors
-    static let primary = UIColor(red: 0.945, green: 0.537, blue: 0.722, alpha: 1.0)
-    static let secondary = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+    private static let primaryKey = "AppColors.primary.hex"
+    private static let defaultPrimary = UIColor(red: 0.945, green: 0.537, blue: 0.722, alpha: 1.0)
     
-    // MARK: - Derived Colors
-    static let primaryLight = primary.withAlphaComponent(0.3)
-    static let primaryDark = UIColor(red: 0.756, green: 0.429, blue: 0.578, alpha: 1.0)
+    // MARK: - Primary Colors (dynamic, persisted)
+    static var primary: UIColor {
+        get {
+            if let hex = UserDefaults.standard.string(forKey: primaryKey), let color = ColorUtils.color(fromHex: hex) {
+                return color
+            }
+            return defaultPrimary
+        }
+        set {
+            let hex = ColorUtils.hexString(from: newValue)
+            UserDefaults.standard.set(hex, forKey: primaryKey)
+        }
+    }
+    
+    static var secondary: UIColor { UIColor(white: 1.0, alpha: 1.0) }
+    
+    // MARK: - Derived Colors (computed from primary)
+    static var primaryLight: UIColor { primary.withAlphaComponent(0.3) }
+    static var primaryDark: UIColor { primary.withAlphaComponent(0.8) }
     
     // MARK: - UI Colors
-    static let background = primary
-    static let buttonBackground = UIColor(red: 1.0, green: 1, blue: 1, alpha: 1)
-    static let buttonText = primary
-    static let titleText = UIColor(red: 1.0, green: 1, blue: 1, alpha: 1.0)
-    static let subtitleText = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8)
+    static var background: UIColor { primary }
+    static var buttonBackground: UIColor { UIColor(white: 1.0, alpha: 1.0) }
+    static var buttonText: UIColor { primary }
+    static var titleText: UIColor { UIColor(white: 1.0, alpha: 1.0) }
+    static var subtitleText: UIColor { UIColor(white: 1.0, alpha: 0.8) }
 }
