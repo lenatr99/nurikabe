@@ -155,6 +155,13 @@ struct ToolbarAction {
         fallbackText: "~",
         color: AppColors.primary
     )
+    
+    static let hint = ToolbarAction(
+        name: "hintButton",
+        iconName: "hint",
+        fallbackText: "💡",
+        color: AppColors.primary
+    )
 }
 
 // MARK: - Private helpers

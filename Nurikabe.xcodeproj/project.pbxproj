@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B9BF6C96626FEA320F28C799 /* Pods_Nurikabe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06493D7D694997AED8674DC8 /* Pods_Nurikabe.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		02D54ACE2E4B3D2C00A2CDDD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,9 @@
 		02D54AB42E4B3D2B00A2CDDD /* Nurikabe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nurikabe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02D54ACD2E4B3D2C00A2CDDD /* NurikabeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NurikabeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		02D54AD72E4B3D2C00A2CDDD /* NurikabeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NurikabeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		06493D7D694997AED8674DC8 /* Pods_Nurikabe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nurikabe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F1A9471F9BF6C3CC9229FC2 /* Pods-Nurikabe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nurikabe.release.xcconfig"; path = "Target Support Files/Pods-Nurikabe/Pods-Nurikabe.release.xcconfig"; sourceTree = "<group>"; };
+		E8B659A8390DCEE649919E4C /* Pods-Nurikabe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nurikabe.debug.xcconfig"; path = "Target Support Files/Pods-Nurikabe/Pods-Nurikabe.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9BF6C96626FEA320F28C799 /* Pods_Nurikabe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +87,8 @@
 				02D54AD02E4B3D2C00A2CDDD /* NurikabeTests */,
 				02D54ADA2E4B3D2C00A2CDDD /* NurikabeUITests */,
 				02D54AB52E4B3D2B00A2CDDD /* Products */,
+				AB13070563BB1F05BCF37377 /* Pods */,
+				E3903CDB5FFD6082AD92A3A9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,6 +102,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AB13070563BB1F05BCF37377 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E8B659A8390DCEE649919E4C /* Pods-Nurikabe.debug.xcconfig */,
+				1F1A9471F9BF6C3CC9229FC2 /* Pods-Nurikabe.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E3903CDB5FFD6082AD92A3A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				06493D7D694997AED8674DC8 /* Pods_Nurikabe.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -99,9 +126,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02D54AE12E4B3D2C00A2CDDD /* Build configuration list for PBXNativeTarget "Nurikabe" */;
 			buildPhases = (
+				5A3415BE2E0B9C23490BDACD /* [CP] Check Pods Manifest.lock */,
 				02D54AB02E4B3D2B00A2CDDD /* Sources */,
 				02D54AB12E4B3D2B00A2CDDD /* Frameworks */,
 				02D54AB22E4B3D2B00A2CDDD /* Resources */,
+				E4454183E5BD46EF77720CC7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -111,8 +140,6 @@
 				02D54AB62E4B3D2B00A2CDDD /* Nurikabe */,
 			);
 			name = Nurikabe;
-			packageProductDependencies = (
-			);
 			productName = Nurikabe;
 			productReference = 02D54AB42E4B3D2B00A2CDDD /* Nurikabe.app */;
 			productType = "com.apple.product-type.application";
@@ -134,8 +161,6 @@
 				02D54AD02E4B3D2C00A2CDDD /* NurikabeTests */,
 			);
 			name = NurikabeTests;
-			packageProductDependencies = (
-			);
 			productName = NurikabeTests;
 			productReference = 02D54ACD2E4B3D2C00A2CDDD /* NurikabeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -157,8 +182,6 @@
 				02D54ADA2E4B3D2C00A2CDDD /* NurikabeUITests */,
 			);
 			name = NurikabeUITests;
-			packageProductDependencies = (
-			);
 			productName = NurikabeUITests;
 			productReference = 02D54AD72E4B3D2C00A2CDDD /* NurikabeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -230,6 +253,52 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5A3415BE2E0B9C23490BDACD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Nurikabe-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4454183E5BD46EF77720CC7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Nurikabe/Pods-Nurikabe-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Nurikabe/Pods-Nurikabe-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Nurikabe/Pods-Nurikabe-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		02D54AB02E4B3D2B00A2CDDD /* Sources */ = {
@@ -306,7 +375,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -370,7 +439,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -392,19 +461,15 @@
 		};
 		02D54AE22E4B3D2C00A2CDDD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E8B659A8390DCEE649919E4C /* Pods-Nurikabe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UBFXPWGV4S;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -420,19 +485,15 @@
 		};
 		02D54AE32E4B3D2C00A2CDDD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F1A9471F9BF6C3CC9229FC2 /* Pods-Nurikabe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UBFXPWGV4S;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,7 +513,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeTests;
@@ -470,7 +532,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeTests;
@@ -487,7 +550,8 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -503,7 +567,8 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TwinsDev.NurikabeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

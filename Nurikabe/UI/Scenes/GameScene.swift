@@ -30,6 +30,7 @@ class GameScene: BaseScene {
     private var cellSize: CGFloat = 0
     private var isSubmitEnabled = true
     private var isNavigatingFromNext = false
+    private var pendingHint: HintProvider.Hint?
     
     // MARK: - Drag State
     private var isDragging = false
@@ -110,6 +111,7 @@ class GameScene: BaseScene {
             ToolbarAction.redo,
             ToolbarAction.clear,
             ToolbarAction.flood,
+            ToolbarAction.hint,
         ]
         
         gameToolbar = GameToolbar.create(style: toolbarStyle, actions: actions)
@@ -224,6 +226,7 @@ class GameScene: BaseScene {
         GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "redoButton", enabled: allowActions && commandManager.canRedo)
         GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "clearButton", enabled: allowActions)
         GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "floodButton", enabled: allowActions)
+        GameToolbar.updateButtonState(toolbar: toolbar, buttonName: "hintButton", enabled: allowActions)
     }
     
     // MARK: - Touch Handling
@@ -233,6 +236,12 @@ class GameScene: BaseScene {
         let location = touch.location(in: self)
         let touchedNode = atPoint(location)
         
+        // Handle hint popup buttons first (if visible)
+        if childNode(withName: "hintOverlay") != nil {
+            handleHintPopupTouch(touchedNode: touchedNode)
+            return // Don't process other touches while popup is visible
+        }
+        
         // Handle button touches
         let buttonNames = ["backButton", "submitButton", "nextButton"]
         handleButtonTouch(touch: touch, buttonNames: buttonNames, onPress: { button in
@@ -240,11 +249,39 @@ class GameScene: BaseScene {
         })
         
         // Handle toolbar button touches
-        let toolbarButtonNames = ["undoButton", "redoButton", "clearButton", "floodButton"]
+        let toolbarButtonNames = ["undoButton", "redoButton", "clearButton", "floodButton", "hintButton"]
         handleToolbarTouch(touch: touch, buttonNames: toolbarButtonNames)
         
         // Handle grid cell taps
         handleCellTouch(touch: touch, location: location, touchedNode: touchedNode)
+    }
+    
+    private func handleHintPopupTouch(touchedNode: SKNode) {
+        let buttonNames = ["watchAdButton", "cancelHintButton"]
+        
+        guard let tappedButton = PopupDialog.findTappedButton(touchedNode: touchedNode, buttonNames: buttonNames) else {
+            return
+        }
+        
+        // Find the actual button node for animation
+        var node: SKNode? = touchedNode
+        while let current = node {
+            if current.name == tappedButton {
+                PopupDialog.animateButtonPress(current) { [weak self] in
+                    switch tappedButton {
+                    case "watchAdButton":
+                        self?.confirmWatchAd()
+                    case "cancelHintButton":
+                        self?.dismissHintConfirmation()
+                        self?.pendingHint = nil
+                    default:
+                        break
+                    }
+                }
+                return
+            }
+            node = current.parent
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -384,9 +421,116 @@ class GameScene: BaseScene {
                 updateGridVisuals()
                 progressManager.savePuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
             }
+        case "hintButton":
+            requestHint()
         default:
             break
         }
+    }
+    
+    // MARK: - Hint System
+    
+    private func requestHint() {
+        // First check if there's a hint available
+        guard let hint = HintProvider.getHint(grid: gameGrid, puzzle: currentPuzzle) else {
+            showMessage("No hints needed - puzzle looks correct!")
+            return
+        }
+        
+        // Store hint for later use
+        pendingHint = hint
+        
+        // Show confirmation popup using reusable component
+        let overlay = PopupDialog.create(config: .hint(), sceneSize: size)
+        overlay.name = "hintOverlay"
+        addChild(overlay)
+        PopupDialog.show(overlay)
+    }
+    
+    private func dismissHintConfirmation() {
+        if let overlay = childNode(withName: "hintOverlay") {
+            PopupDialog.dismiss(overlay)
+        }
+    }
+    
+    private func confirmWatchAd() {
+        dismissHintConfirmation()
+        
+        guard let hint = pendingHint else { return }
+        
+        // Show rewarded ad
+        showRewardedAd { [weak self] earnedReward in
+            guard let self = self, earnedReward else {
+                self?.showMessage("Ad not available, try again later")
+                return
+            }
+            
+            // User earned the reward - apply the hint
+            self.applyHint(hint)
+            self.pendingHint = nil
+        }
+    }
+    
+    private func applyHint(_ hint: HintProvider.Hint) {
+        guard let cell = gameGrid.getCell(row: hint.row, col: hint.col) else { return }
+        
+        // Create and execute command for undo support
+        let command = CellStateCommand(
+            gameGrid: gameGrid,
+            row: hint.row,
+            col: hint.col,
+            newState: hint.correctState
+        )
+        commandManager.executeCommand(command)
+        
+        // Update visuals
+        GridRenderer.updateCellVisual(cell, cellSize: cellSize)
+        progressManager.savePuzzleProgress(gameGrid, puzzleIndex: currentPuzzleIndex)
+        
+        // Show hint animation
+        showHintAnimation(at: hint.row, col: hint.col)
+        showMessage(hint.message)
+    }
+    
+    private func showHintAnimation(at row: Int, col: Int) {
+        guard let cell = gameGrid.getCell(row: row, col: col),
+              let cellNode = cell.node else { return }
+        
+        // Create a highlight effect
+        let highlight = SKShapeNode(rectOf: CGSize(width: cellSize, height: cellSize))
+        highlight.fillColor = UIColor.yellow.withAlphaComponent(0.5)
+        highlight.strokeColor = UIColor.yellow
+        highlight.lineWidth = 3
+        highlight.zPosition = 100
+        highlight.position = cellNode.position
+        gridContainer.addChild(highlight)
+        
+        // Animate and remove
+        let fadeIn = SKAction.fadeIn(withDuration: 0.2)
+        let wait = SKAction.wait(forDuration: 0.8)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.3)
+        let remove = SKAction.removeFromParent()
+        
+        highlight.alpha = 0
+        highlight.run(.sequence([fadeIn, wait, fadeOut, remove]))
+    }
+    
+    private func showMessage(_ text: String) {
+        let messageLabel = SKLabelNode(fontNamed: "HelveticaNeue-Medium")
+        messageLabel.text = text
+        messageLabel.fontSize = 20
+        messageLabel.fontColor = UIColor.white
+        messageLabel.position = CGPoint(x: 0, y: size.height * 0.3)
+        messageLabel.zPosition = 150
+        messageLabel.alpha = 0
+        addChild(messageLabel)
+        
+        messageLabel.run(.sequence([
+            .fadeIn(withDuration: 0.3),
+            .wait(forDuration: 2.0),
+            .fadeOut(withDuration: 0.3),
+            .removeFromParent()
+        ]))
     }
     
     private func handleSubmit() {

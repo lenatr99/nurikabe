@@ -10,7 +10,7 @@ DERIVED_DATA_PATH="build"
 
 # Console verbosity controls
 LOG_LEVEL="${LOG_LEVEL:-default}"  # default | info | debug
-LOG_PREDICATE="(process == \"${SCHEME}\") OR (subsystem BEGINSWITH[c] \"${BUNDLE_ID}\") OR (senderImagePath CONTAINS[c] \"/${SCHEME}.app/\") OR (processImagePath CONTAINS[c] \"/${SCHEME}.app/\")"
+LOG_PREDICATE="((process == \"${SCHEME}\") OR (subsystem BEGINSWITH[c] \"${BUNDLE_ID}\") OR (senderImagePath CONTAINS[c] \"/${SCHEME}.app/\") OR (processImagePath CONTAINS[c] \"/${SCHEME}.app/\")) AND NOT (subsystem == \"com.apple.WebKit\")"
 # =================
 
 log() { echo -e "$1"; }
@@ -82,12 +82,23 @@ open -a "Simulator" --args -CurrentDeviceUDID "$UDID" || true
 
 log "📦 Building $SCHEME for device id=$UDID..."
 
-XCB_CMD=(xcodebuild build
-  -scheme "$SCHEME"
-  -configuration "$CONFIGURATION"
-  -destination "id=$UDID"
-  -derivedDataPath "$DERIVED_DATA_PATH"
-)
+# Use workspace if CocoaPods is set up, otherwise use project
+if [[ -f "Nurikabe.xcworkspace/contents.xcworkspacedata" ]]; then
+  XCB_CMD=(xcodebuild build
+    -workspace "Nurikabe.xcworkspace"
+    -scheme "$SCHEME"
+    -configuration "$CONFIGURATION"
+    -destination "id=$UDID"
+    -derivedDataPath "$DERIVED_DATA_PATH"
+  )
+else
+  XCB_CMD=(xcodebuild build
+    -scheme "$SCHEME"
+    -configuration "$CONFIGURATION"
+    -destination "id=$UDID"
+    -derivedDataPath "$DERIVED_DATA_PATH"
+  )
+fi
 
 # Build with nice output if xcbeautify is available, while preserving exit code
 if command -v xcbeautify >/dev/null 2>&1; then
